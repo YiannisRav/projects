@@ -1,0 +1,107 @@
+//============================================================================
+// Name        : find33.cpp
+// Author      : Yiannis Ravanis
+// Version     : 1.1
+// Description : A program to solve m=x^3+y^3+z^3 for a choosen m.
+//============================================================================
+
+#include <iostream>
+#define M 11
+using namespace std;
+
+
+int limit=100;
+unsigned long num1, num2, num3;
+bool found=false;
+bool nega,negb,negc=false;
+char signa,signb,signc;
+
+bool test(unsigned long &a,unsigned long &b, unsigned long &c, int test_num){
+	if((a*a*a+b*b*b+c*c*c)==test_num){
+		found=true;
+	}
+	else if((a*a*a+b*b*b-c*c*c)==test_num){
+		found=true;
+		negc=true;
+	}
+	else if((a*a*a-b*b*b+c*c*c)==test_num){
+		found=true;
+		negb=true;
+	}
+	else if((a*a*a-b*b*b-c*c*c)==test_num){
+		found=true;
+		negb=true;
+		negc=true;
+	}
+	else if((-a*a*a+b*b*b+c*c*c)==test_num){
+		found=true;
+		nega=true;
+	}
+	else if((-a*a*a+b*b*b-c*c*c)==test_num){
+		found=true;
+		nega=true;
+		negc=true;
+	}
+	else if((-a*a*a-b*b*b+c*c*c)==test_num){
+		found=true;
+		nega=true;
+		negb=true;
+	}
+	else if((-a*a*a-b*b*b-c*c*c)==test_num){
+		found=true;
+		nega=true;
+		negb=true;
+		negc=true;
+	}
+	return found;
+}
+
+void find_sign(){
+	if(nega){
+		signa='-';
+	}
+	else
+		signa='+';
+	if(negb){
+		signb='-';
+	}
+	else
+		signb='+';
+	if(negc){
+		signc='-';
+	}
+	else
+		signc='+';
+}
+
+void print_res(int test_num){
+	std::cout<<test_num<<" is ("<<signa<<num1-1<<")^3 ("<<signb<<num2-1<<")^3 ("<<signc<<num3-1<<")^3"<<std::endl;
+}
+
+void find_factors(unsigned long &a,unsigned long &b,unsigned long &c, int test_num){
+	while(!found){
+		for(a=limit-100;a<limit&&!found;a++){
+			for(b=limit-100;b<limit&&!found;b++){
+				for(c=limit-100;c<limit&&!found;c++){
+					test(a,b,c,test_num);
+					std::cout<<a<<" "<<b<<" "<<c<<" "<<std::endl;
+				}
+			}
+		}
+		limit=limit+100;
+	}
+}
+
+void reinitialize(){
+	found=false;
+	nega=false;
+	negb=false;
+	negc=false;
+}
+
+int main(){
+	int test_num=M;
+	find_factors(num1,num2,num3,test_num);
+	find_sign();
+	print_res(test_num);
+}
